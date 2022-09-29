@@ -5,4 +5,4 @@ from interval_timer import IntervalTimer
 
 
 for interval in IntervalTimer(0.5, start=4, stop=8):
-    print(interval.index, f'{interval.time:.03f}')
+    print(interval)
