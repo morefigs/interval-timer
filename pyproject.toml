@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "interval-timer"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["morefigs"]
+homepage = "https://github.com/morefigs/interval-timer"
 readme = "README.md"
 packages = [{include = "interval_timer"}]
 
