@@ -2,7 +2,7 @@
 name = "interval-timer"
 version = "0.1.1"
 description = ""
-authors = ["morefigs <morefigs@gmail.com>"]
+authors = ["morefigs"]
 readme = "README.md"
 packages = [{include = "interval_timer"}]
 
