@@ -9,6 +9,9 @@ class Interval:
     period: float
     time: float
 
+    def __repr__(self):
+        return f'Interval(index={self.index}, time={self.time:.06f}, buffer={self.buffer}%)'
+
     @property
     def min(self) -> float:
         """
@@ -24,9 +27,19 @@ class Interval:
         return self.min + self.period
 
     @property
+    def buffer(self) -> int:
+        """
+        The time at which the iteration occurred before the interval's maximum limit, as a percentage. Over 100%
+        indicates that the iteration was requested before the time interval, under 100% indicates that there was some
+        lag of the interval being requested relative to the start of the interval, and under 0% indicates that the
+        interval was missed altogether.
+        """
+        return round((self.max - self.time) / self.period * 100)
+
+    @property
     def missed(self) -> bool:
         """
-        The time interval was missed and the corresponding iteration was not synchronised to the current time interval.
+        Indicates that the time interval was missed and the iteration was not synchronised to within the time interval.
         """
         return self.max <= self.time
 
@@ -40,7 +53,7 @@ class IntervalTimer:
 
     def __init__(self, period: float, start: int = 0, stop: Optional[int] = None):
         """
-        An interval timer iterator that synchronises code execution to within specific time intervals.
+        An interval timer iterator that synchronises iterations to within specific time intervals.
 
         The time taken for code execution within each iteration will not affect the interval timing, provided that the
         execution time is not longer than the interval period. The caller can check if this is the case by checking the
@@ -63,11 +76,10 @@ class IntervalTimer:
             raise StopIteration()
 
         interval = Interval(self._index, self._period, self._perf_counter_relative())
-
-        # Block until the clock time reaches the interval window
-        while interval.time < interval.min:
-            sleep(self.CPU_THROTTLE_S)
-            interval = Interval(self._index, self._period, self._perf_counter_relative())
-
         self._index += 1
+
+        # Block this iteration until its interval begins
+        while self._perf_counter_relative() < interval.min:
+            sleep(self.CPU_THROTTLE_S)
+
         return interval
