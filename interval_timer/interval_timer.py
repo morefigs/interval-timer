@@ -7,6 +7,7 @@ from dataclasses import dataclass
 class Interval:
     index: int
     period: float
+    time_ready: float
     time: float
 
     def __repr__(self):
@@ -34,7 +35,14 @@ class Interval:
         lag of the interval being requested relative to the start of the interval, and under 0% indicates that the
         interval was missed altogether.
         """
-        return round((self.max - self.time) / self.period * 100)
+        return round((self.max - self.time_ready) / self.period * 100)
+
+    @property
+    def arrived(self) -> bool:
+        """
+        Indicates that this time interval has been reached.
+        """
+        return self.min <= self.time
 
     @property
     def missed(self) -> bool:
@@ -75,11 +83,13 @@ class IntervalTimer:
         if self._stop == self._index:
             raise StopIteration()
 
-        interval = Interval(self._index, self._period, self._perf_counter_relative())
-        self._index += 1
+        time_ready = self._perf_counter_relative()
+        interval = Interval(self._index, self._period, time_ready, time_ready)
 
-        # Block this iteration until its interval begins
-        while self._perf_counter_relative() < interval.min:
+        # Block this iteration until its interval arrives
+        while not interval.arrived:
+            interval = Interval(self._index, self._period, time_ready, self._perf_counter_relative())
             sleep(self.CPU_THROTTLE_S)
 
+        self._index += 1
         return interval
