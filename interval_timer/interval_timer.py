@@ -3,7 +3,7 @@ from time import sleep, perf_counter
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass
 class Interval:
     index: int
     period: float
@@ -83,12 +83,12 @@ class IntervalTimer:
         if self._stop == self._index:
             raise StopIteration()
 
-        time_ready = self._perf_counter_relative()
-        interval = Interval(self._index, self._period, time_ready, time_ready)
+        time = self._perf_counter_relative()
+        interval = Interval(self._index, self._period, time, time)
 
-        # Block this iteration until its interval arrives
+        # Block this iteration until the interval is arrived at
         while not interval.arrived:
-            interval = Interval(self._index, self._period, time_ready, self._perf_counter_relative())
+            interval.time = self._perf_counter_relative()
             sleep(self.CPU_THROTTLE_S)
 
         self._index += 1
