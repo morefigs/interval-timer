@@ -7,7 +7,7 @@ from dataclasses import dataclass
 class Interval:
     index: int
     period: float
-    time_ready: float
+    time_requested: float
     time: float
 
     def __repr__(self):
@@ -28,28 +28,49 @@ class Interval:
         return self.min + self.period
 
     @property
-    def buffer(self) -> int:
-        """
-        The time at which the iteration occurred before the interval's maximum limit, as a percentage. Over 100%
-        indicates that the iteration was requested before the time interval, under 100% indicates that there was some
-        lag of the interval being requested relative to the start of the interval, and under 0% indicates that the
-        interval was missed altogether.
-        """
-        return round((self.max - self.time_ready) / self.period * 100)
-
-    @property
     def arrived(self) -> bool:
         """
-        Indicates that this time interval has been reached.
+        Whether this time interval has been reached.
         """
         return self.min <= self.time
 
     @property
     def missed(self) -> bool:
         """
-        Indicates that the time interval was missed and the iteration was not synchronised to within the time interval.
+        Indicates that the time interval was missed and (the start of) the iteration did not occur within the interval.
         """
         return self.max <= self.time
+
+    @property
+    def buffer(self) -> float:
+        """
+        The amount of time between the interval being requested and the interval starting. The minimum buffer is zero.
+        """
+        buffer = self.min - self.time_requested
+        if buffer < 0:
+            buffer = 0
+        return buffer
+
+    @property
+    def lag(self) -> float:
+        """
+        The amount of time after the interval started and the interval being requested. The minimum lag is zero.
+        """
+        return self.time - self.min
+
+    @property
+    def buffer_percent(self) -> str:
+        """
+        Buffer as a percentage.
+        """
+        return f'{round(self.buffer / self.period * 100)}%'
+
+    @property
+    def lag_percent(self) -> str:
+        """
+        Lag as a percentage.
+        """
+        return f'{round(self.lag / self.period * 100)}%'
 
 
 class IntervalTimer:
