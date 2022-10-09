@@ -10,8 +10,8 @@ class Interval:
     time_requested: float
     time: float
 
-    def __repr__(self):
-        return f'Interval(index={self.index}, time={self.time:.06f}, buffer={self.buffer}%)'
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}(index={self.index}, time={self.time:.03f}, lag={self.lag:.03f})'
 
     @property
     def min(self) -> float:
