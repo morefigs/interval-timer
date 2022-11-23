@@ -1,0 +1,43 @@
+from dataclasses import dataclass
+
+
+@dataclass
+class Interval:
+    index: int
+    period: float
+    _time_ready: float
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}(index={self.index}, time={self.time:.03f}, lag={self.lag:.03f})'
+
+    @property
+    def time(self) -> float:
+        """
+        The start time of the interval.
+        """
+        return self.index * self.period
+
+    @property
+    def end_time(self):
+        """
+        The end time of the interval.
+        """
+        return self.time + self.period
+
+    @property
+    def buffer(self) -> float:
+        """
+        The length of time before the interval start time that the interval was requested. The minimum buffer is zero.
+        """
+        if self.time < self._time_ready:
+            return 0
+        return self.time - self._time_ready
+
+    @property
+    def lag(self) -> float:
+        """
+        The length of time after the interval start time that the interval was requested. The minimum lag is zero.
+        """
+        if self._time_ready < self.time:
+            return 0
+        return self._time_ready - self.time
