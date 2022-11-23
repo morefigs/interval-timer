@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Optional
 from time import sleep, perf_counter
 from dataclasses import dataclass
@@ -97,7 +98,7 @@ class IntervalTimer:
         self._stop = stop
         self._zero_count = perf_counter()
 
-    def __iter__(self) -> 'IntervalTimer':
+    def __iter__(self) -> IntervalTimer:
         return self
 
     def __next__(self) -> Interval:
