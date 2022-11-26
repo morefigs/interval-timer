@@ -13,14 +13,14 @@ class Interval:
     @property
     def time(self) -> float:
         """
-        The start time of the interval.
+        The start time of the interval, in seconds since the iterator object was created.
         """
         return self.index * self.period
 
     @property
     def end_time(self):
         """
-        The end time of the interval.
+        The end time of the interval, in seconds since the iterator object was created.
         """
         return self.time + self.period
 
@@ -37,6 +37,9 @@ class Interval:
     def lag(self) -> float:
         """
         The length of time after the interval start time that the interval was requested. The minimum lag is zero.
+
+        If the lag is non-zero, then the code executed within the previous interval took longer than the interval, which
+        is generally undesirable.
         """
         if self._time_ready < self.time:
             return 0
