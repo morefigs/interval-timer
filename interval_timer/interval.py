@@ -38,8 +38,8 @@ class Interval:
         """
         The length of time after the interval start time that the interval was requested. The minimum lag is zero.
 
-        If the lag is non-zero, then the code executed within the previous interval took longer than the interval, which
-        is generally undesirable.
+        If the lag is non-zero, then the code executed within the previous interval took longer than the interval
+        period, which is generally undesirable.
         """
         if self._time_ready < self.time:
             return 0
