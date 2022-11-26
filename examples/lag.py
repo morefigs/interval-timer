@@ -1,5 +1,5 @@
 """
-Iterate over 1 second intervals, stopping when the lag exceeds half a second.
+Iterate over 1 second intervals that are delayed by slow code execution, stopping when the lag exceeds half a second.
 """
 from time import sleep
 
@@ -12,4 +12,5 @@ for interval in IntervalTimer(1):
     if interval.lag > 0.5:
         raise StopIteration('Too much lag!')
 
+    # Wait longer than the interval time!
     sleep(1.1)
