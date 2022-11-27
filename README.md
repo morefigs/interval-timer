@@ -39,7 +39,7 @@ For more usage examples see [examples/](examples).
 
 `IntervalTimer` is an iterator object that returns `Interval` objects at regular time intervals. Code can then be executed upon each time interval, and the intervals will stay synchronised even when the code execution time is non-zero.
 
-`IntervalTimer` is a more precise replacement for a for loop that contains a wait. The following code:
+`IntervalTimer` is a more precise replacement for a loop that contains a wait. The following code:
     
 ```python
 from time import sleep
