@@ -68,7 +68,7 @@ If an interval iteration is delayed due to slow code execution, then future inte
 
 ![Timing diagram](timing.svg)
 
-The above timing diagram shows that each `Interval` object has the following attributes:
+The above timing diagram shows that each returned `Interval` object has the following attributes:
 - `time`: the nominal start time of the interval. Always has equal value to the `end_time` value of the previous interval.
 - `buffer`: the length of time before the interval start time that the interval was requested. The minimum buffer is zero.
 - `lag`: The length of time after the interval start time that the interval was requested. The minimum lag is zero. If the lag is non-zero, then the code executed within the previous interval took longer than the interval period, which is generally undesirable.
