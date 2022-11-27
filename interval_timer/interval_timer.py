@@ -53,3 +53,7 @@ class IntervalTimer:
             sleep(self.CPU_SLEEP_S)
 
         return interval
+
+
+class IntervalError(Exception):
+    pass

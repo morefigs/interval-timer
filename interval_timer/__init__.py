@@ -1,1 +1,1 @@
-from interval_timer.interval_timer import IntervalTimer
+from interval_timer.interval_timer import IntervalTimer, IntervalError
