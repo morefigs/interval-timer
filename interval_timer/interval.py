@@ -18,13 +18,6 @@ class Interval:
         return self.index * self.period
 
     @property
-    def end_time(self):
-        """
-        The end time of the interval, in seconds since the iterator object was created.
-        """
-        return self.time + self.period
-
-    @property
     def buffer(self) -> float:
         """
         The length of time before the interval start time that the interval was requested. The minimum buffer is zero.
