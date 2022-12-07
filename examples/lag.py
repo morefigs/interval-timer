@@ -3,10 +3,10 @@ Iterate over 1 second intervals that are delayed by slow code execution, stoppin
 """
 from time import sleep
 
-from interval_timer import IntervalTimer, IntervalError
+from interval_timer import interval_timer, IntervalError
 
 
-for interval in IntervalTimer(1):
+for interval in interval_timer(1):
     print(interval)
 
     if interval.lag > 0.5:

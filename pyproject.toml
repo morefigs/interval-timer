@@ -9,6 +9,7 @@ packages = [{include = "interval_timer"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+stoppy = "^1.0.4"
 
 
 [build-system]

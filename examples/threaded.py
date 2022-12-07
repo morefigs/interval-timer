@@ -1,14 +1,14 @@
 """
 Iterate asynchronously in a dedicated thread.
 """
-from threading import Thread
+from threading import Thread, current_thread
 
-from interval_timer import IntervalTimer
+from interval_timer import interval_timer
 
 
 def threaded():
-    for interval in IntervalTimer(0.25, stop=8):
-        print(interval)
+    for interval in interval_timer(0.5, stop=4):
+        print(f'{current_thread().name}: {interval}')
 
 
 thread = Thread(target=threaded, daemon=True)

@@ -1,10 +1,10 @@
 """
 Iterate at precisely 100 Hz.
 """
-from interval_timer import IntervalTimer, IntervalError
+from interval_timer import interval_timer, IntervalError
 
 
-for interval in IntervalTimer(0.01):
+for interval in interval_timer(0.01):
     print(interval)
 
     if interval.lag:
